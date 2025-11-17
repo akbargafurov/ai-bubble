@@ -8,16 +8,24 @@ def load_stock_data(tickers, start="2020-01-01", end=None):
     Load historical stock data for given tickers using Yahoo Finance.
     
     Parameters:
-    tickers (list or str): list of stock ticker symbols or list of symbols.
-    start (str, optional): start date in YYYY-MM-DD format.
-    end (str, optional): end date in YYYY-MM-DD format. If None, defaults to today's date.
+        tickers (list or str): list of stock ticker symbols or string of tickers separated by commas or spaces.
+        start (str, optional): start date in YYYY-MM-DD format.
+        end (str, optional): end date in YYYY-MM-DD format. If None, defaults to today's date.
 
     Returns:
-    pd.DataFrame: pandas DataFrame of closing prices indexed by date.
+        pd.DataFrame: pandas DataFrame of closing prices indexed by date.
     """
     # ensure list of tickers
     if isinstance(tickers, str):
-        tickers = [tickers]
+        tickers = [tickers.strip() for tick in tickers.replace(',', ' ').split()]
+
+    # ensure tickers is a list
+    if not isinstance(tickers, list):
+        raise TypeError("Tickers must be provided as a list or a string separated by commas or spaces.")
+    
+    # ensure all tickers are strings
+    if not all(isinstance(ticker, str) for ticker in tickers):
+        raise ValueError("All tickers must be strings.")
 
     # sort tickers for consistent order
     sorted_tickers = sorted(tickers)
