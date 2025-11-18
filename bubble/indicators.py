@@ -25,3 +25,30 @@ def calculate_returns(fin_data, log_returns=False):
         returns = fin_data.pct_change().dropna()
 
     return returns
+
+
+def calculate_rolling_volatility(returns, window=60):
+    """
+    Calculate rolling volatility of returns over a specific window.
+    
+    Parameters:
+        returns (pd.DataFrame): pandas DataFrame of daily returns indexed by date.
+        window (int, optional): rolling window size in number of days. Defaults to 60 days.
+        
+        
+    Returns:
+        pd.DataFrame: pandas DataFrame of rolling volatility values indexed by date.
+    """
+
+    # handle cases where no data exists
+    if returns.empty:
+        raise ValueError(f"Input data on returns is empty.")
+    
+    # handle cases where there are not enough data points
+    if len(returns) < window:
+        raise ValueError(f"Not enough data points to compute rolling volatility with window size {window}.")
+    
+    # calculate rolling volatility (standard deviation) for each stock
+    rolling_volume = returns.rolling(window=window).std() * (252 ** 0.5)
+
+    return rolling_volume
