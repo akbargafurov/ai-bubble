@@ -35,7 +35,10 @@ def load_stock_data(tickers, start="2020-01-01", end=None):
         end = datetime.today().strftime('%Y-%m-%d')
 
     # download data and suppress progress bar
-    data = yf.download(sorted_tickers, start=start, end=end, progress=False, auto_adjust=True)
+    try:
+        data = yf.download(sorted_tickers, start=start, end=end, progress=False, auto_adjust=True)
+    except Exception as e:
+        raise RuntimeError(f"Failed to download data from Yahoo Finance: {e}")
 
     # handle cases where no data exists
     if data.empty:
