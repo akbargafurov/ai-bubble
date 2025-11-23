@@ -51,10 +51,4 @@ def load_stock_data(tickers, start="2020-01-01", end=None):
     # drop empty columns
     close_data.dropna(axis=1, how="all", inplace=True)
 
-    # print loaded data summary
-    print(f"✅ stock data loaded")
-    print(f"tickers: {', '.join(sorted_tickers)}")
-    print(f"data range: {close_data.index.min().date()} → {close_data.index.max().date()}")
-    print(f"number of rows: {len(close_data)}")
-
     return close_data
