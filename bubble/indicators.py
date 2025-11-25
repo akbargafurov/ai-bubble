@@ -14,6 +14,9 @@ def calculate_returns(close, log_returns=False):
 
     Returns:
         pd.DataFrame: DataFrame of daily returns.
+
+    Raises:
+        ValueError: If the input data is empty.
     """
 
     # handle cases where no data exists
@@ -41,6 +44,9 @@ def calculate_index_returns(index, log_returns=False):
 
     Returns:
         pd.Series: Series of index level returns.
+
+    Raises:
+        ValueError: If the input data is empty.
     """
 
     # handle cases where no data exists
@@ -66,6 +72,9 @@ def calculate_rolling_volatility(returns, window=60):
            
     Returns:
         pd.DataFrame: DataFrame of rolling volatility values indexed by date.
+
+    Raises:
+        ValueError: If the input data is empty or has insufficient data points.
     """
 
     # handle cases where no data exists
@@ -95,6 +104,10 @@ def calculate_rolling_correlation(returns, window=60):
 
     Returns:
         pd.Series: Series of average rolling correlation indexed by date.
+
+    Raises:
+        ValueError: 
+            If the input data is empty, has insufficient data points, or has less than two columns.
     """
 
     # handle cases where no data exists
