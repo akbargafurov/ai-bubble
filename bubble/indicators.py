@@ -29,6 +29,33 @@ def calculate_returns(close, log_returns=False):
     return returns
 
 
+def calculate_index_returns(index, log_returns=False):
+    """
+    Calculate daily returns from closing prices (index level).
+
+    Parameters:
+        index (pd.DataFrame): Series of index level indexed by date.
+        log_returns (bool, optional): 
+            If True, calculates log returns instead of simple returns. 
+            Else, defaults to False.
+
+    Returns:
+        pd.Series: Series of index level returns.
+    """
+
+    # handle cases where no data exists
+    if index.empty:
+        raise ValueError(f"Index level series is empty.")
+
+    # calculate daily returns (logarithmic or simple)
+    if log_returns:
+        returns = np.log(index / index.shift(1)).dropna()
+    else:
+        returns = index.pct_change().dropna()
+
+    return returns
+
+
 def calculate_rolling_volatility(returns, window=60):
     """
     Calculate rolling volatility of returns over a specific window.
