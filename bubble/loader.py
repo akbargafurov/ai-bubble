@@ -32,17 +32,28 @@ def _normalize_tickers(tickers):
     return sorted_tickers
 
 
-def load_stock_data(tickers, start="2020-01-01", end=None):
+def load_stock_data(tickers, start="2020-01-01", end=None, adjusted=True, include_volume=False):
     """
     Load historical stock data for given tickers using Yahoo Finance.
     
     Parameters:
-        tickers (list or str): list of stock ticker symbols or string of tickers separated by commas or spaces.
-        start (str, optional): start date in YYYY-MM-DD format.
-        end (str, optional): end date in YYYY-MM-DD format. If None, defaults to today's date.
+        tickers (list or str): 
+            list of stock ticker symbols or string of tickers separated by commas or spaces.
+        start (str, optional): 
+            start date in YYYY-MM-DD format.
+        end (str, optional): 
+            end date in YYYY-MM-DD format. If None, defaults to today's date.
+        adjusted (bool, optional): 
+            If True, use adjusted close prices. 
+            If False, use raw close prices.
+        include_volume (bool, optional): 
+            If True, also include volume data. 
+            If False, don't include volume data.
 
     Returns:
-        pd.DataFrame: pandas DataFrame of closing prices indexed by date.
+        pd.DataFrame: 
+        - if include_volume is True: pandas DataFrame of closing prices and volume indexed by date.
+        - if include_volume is False: pandas DataFrame of closing prices indexed by date.
     """
     # normalize and sort tickers
     symbols = _normalize_tickers(tickers)
@@ -53,7 +64,13 @@ def load_stock_data(tickers, start="2020-01-01", end=None):
 
     # download data and suppress progress bar
     try:
-        data = yf.download(symbols, start=start, end=end, progress=False, auto_adjust=True)
+        data = yf.download(
+            symbols, 
+            start=start, 
+            end=end, 
+            progress=False, 
+            auto_adjust=adjusted
+        )
     except Exception as e:
         raise RuntimeError(f"Failed to download data from Yahoo Finance: {e}")
 
@@ -66,9 +83,23 @@ def load_stock_data(tickers, start="2020-01-01", end=None):
         raise KeyError("'Close' column not found in downloaded data.")
 
     # extract closing prices
-    close_data = data['Close'].copy()
+    close = data['Close'].copy()
 
     # drop empty columns
-    close_data.dropna(axis=1, how="all", inplace=True)
+    close.dropna(axis=1, how="all", inplace=True)
 
-    return close_data
+    # return close data only
+    if not include_volume:
+        return close
+    
+    # handle cases where 'Close' column is missing
+    if 'Volume' not in data.columns.get_level_values(0):
+        raise KeyError("'Volume' column not found in downloaded data.")
+    
+    # extract closing prices
+    volume = data['Volume'].copy()
+
+    # drop empty columns
+    volume.dropna(axis=1, how="all", inplace=True)
+
+    return close, volume
