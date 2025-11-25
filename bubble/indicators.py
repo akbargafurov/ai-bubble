@@ -35,9 +35,8 @@ def calculate_rolling_volatility(returns, window=60):
     
     Parameters:
         returns (pd.DataFrame): pandas DataFrame of daily returns indexed by date.
-        window (int, optional): rolling window size in number of days. Defaults to 60 days.
-        
-        
+        window (int, optional): rolling window size in trading days. Defaults to 60 days.
+           
     Returns:
         pd.DataFrame: pandas DataFrame of rolling volatility values indexed by date.
     """
@@ -48,12 +47,15 @@ def calculate_rolling_volatility(returns, window=60):
     
     # handle cases where there are not enough data points
     if len(returns) < window:
-        raise ValueError(f"Not enough data points to compute rolling volatility with window size {window}.")
+        raise ValueError(
+            f"Not enough data points to compute rolling volatility "
+            f"with window size {window}."
+        )
     
-    # calculate rolling volatility (standard deviation) for each stock
-    rolling_volume = returns.rolling(window=window).std() * (252 ** 0.5)
+    # calculate rolling volatility for each stock
+    rolling_volatility = returns.rolling(window=window).std() * np.sqrt(252.0)
 
-    return rolling_volume
+    return rolling_volatility
 
 
 def calculate_rolling_correlation(returns, window=60):
