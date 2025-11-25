@@ -3,6 +3,35 @@ import yfinance as yf
 from datetime import datetime
 
 
+def _normalize_tickers(tickers):
+    # ensure tickers is a list of tickers as strings
+    if isinstance(tickers, str):
+        tickers = [
+            tick.strip()
+            for tick in tickers.replace(',', ' ').split()
+            if tick.strip()
+        ]
+
+    # ensure tickers is a list
+    if not isinstance(tickers, list):
+        raise TypeError(
+            "Tickers must be provided as a list or a string separated by commas or spaces."
+        )
+    
+    # ensure at least one ticker is provided
+    if not tickers:
+        raise ValueError("At least one ticker must be provided.")
+
+    # ensure all tickers are strings
+    if not all(isinstance(ticker, str) for ticker in tickers):
+        raise ValueError("All tickers must be strings.")
+
+    # sort tickers for consistent order
+    sorted_tickers = sorted(tickers)
+
+    return sorted_tickers
+
+
 def load_stock_data(tickers, start="2020-01-01", end=None):
     """
     Load historical stock data for given tickers using Yahoo Finance.
@@ -15,20 +44,8 @@ def load_stock_data(tickers, start="2020-01-01", end=None):
     Returns:
         pd.DataFrame: pandas DataFrame of closing prices indexed by date.
     """
-    # ensure list of tickers
-    if isinstance(tickers, str):
-        tickers = [tickers.strip() for tick in tickers.replace(',', ' ').split()]
-
-    # ensure tickers is a list
-    if not isinstance(tickers, list):
-        raise TypeError("Tickers must be provided as a list or a string separated by commas or spaces.")
-    
-    # ensure all tickers are strings
-    if not all(isinstance(ticker, str) for ticker in tickers):
-        raise ValueError("All tickers must be strings.")
-
-    # sort tickers for consistent order
-    sorted_tickers = sorted(tickers)
+    # normalize and sort tickers
+    symbols = _normalize_tickers(tickers)
 
     # set end date to today if no end date is provided
     if end is None:
@@ -36,13 +53,13 @@ def load_stock_data(tickers, start="2020-01-01", end=None):
 
     # download data and suppress progress bar
     try:
-        data = yf.download(sorted_tickers, start=start, end=end, progress=False, auto_adjust=True)
+        data = yf.download(symbols, start=start, end=end, progress=False, auto_adjust=True)
     except Exception as e:
         raise RuntimeError(f"Failed to download data from Yahoo Finance: {e}")
 
     # handle cases where no data exists
     if data.empty:
-        raise ValueError(f"No data fetched for given tickers: {sorted_tickers}")
+        raise ValueError(f"No data fetched for given tickers: {symbols}")
     
     # handle cases where 'Close' column is missing
     if 'Close' not in data.columns.get_level_values(0):
