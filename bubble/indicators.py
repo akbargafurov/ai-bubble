@@ -163,3 +163,43 @@ def calculate_rolling_correlation(returns, window=60):
     mean_corr = rolling_corr_mean.mean(axis=1)
 
     return mean_corr
+
+
+def calculate_rolling_sharpe(returns, window=60, risk_free_rate=0.0):
+    """
+    Calculate an approximate annualized rolling Sharpe ratio.
+
+    Parameters:
+        returns (pd.Series): daily returns of an index.
+        window (int, optional): rolling window size in trading days. Defaults to 60 days.
+        risk_free_rate (float, optional): annual risk-free rate as a decimal. Defaults to 0.0.
+
+    Returns:
+        pd.Series: Series of rolling Sharpe ratios indexed by date.
+
+    Raises:
+        ValueError: If the input data is empty or has insufficient data points.
+    """
+    # handle cases where no data exists
+    if returns.empty:
+        raise ValueError(f"Input data on returns is empty.")
+    
+    # handle cases where there are not enough data points
+    if len(returns) < window:
+        raise ValueError(
+            f"Not enough data points to compute rolling volatility "
+            f"with window size {window}."
+        )
+    
+    # convert annual risk-free rate to a daily rate
+    daily_risk_free_rate = risk_free_rate / 252.0
+    excess_returns = returns - daily_risk_free_rate
+
+    # calculate rolling mean and std dev of excess returns
+    rolling_mean = excess_returns.rolling(window=window).mean()
+    rolling_std = excess_returns.rolling(window=window).std()
+
+    # calculate rolling Sharpe ratio
+    sharpe = (rolling_mean / rolling_std) * np.sqrt(252.0)
+
+    return sharpe
