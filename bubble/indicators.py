@@ -62,6 +62,32 @@ def calculate_index_returns(index, log_returns=False):
     return returns
 
 
+def build_equal_weight_index(returns):
+    """
+    Build an equal-weight index from a panel of returns.
+
+    Parameters:
+        returns (pd.DataFrame): DataFrame of closing prices indexed by date.
+
+    Returns:
+        pd.Series: equal-weight index level normalized to 1.0 at the start. 
+
+    Raises:
+        ValueError: If the input data is empty.
+    """
+
+    # handle cases where no data exists
+    if returns.empty:
+        raise ValueError("Input financial data is empty.")
+    
+    # normalize returns to 1.0 on the first date
+    normalized_returns = returns/returns.iloc[0]
+    index = normalized_returns.mean(axis=1)
+    index.name = "equal_weight_index"
+
+    return index
+
+
 def calculate_rolling_volatility(returns, window=60):
     """
     Calculate rolling volatility of returns over a specific window.
