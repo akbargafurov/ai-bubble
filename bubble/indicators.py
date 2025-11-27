@@ -180,7 +180,7 @@ def calculate_rolling_sharpe(returns, window=60, risk_free_rate=0.0):
     Raises:
         ValueError: If the input data is empty or has insufficient data points.
     """
-    
+
     # handle cases where no data exists
     if returns.empty:
         raise ValueError(f"Input data on returns is empty.")
@@ -232,3 +232,20 @@ def calculate_drawdown(index):
     drawdown.name = "drawdown"
 
     return drawdown
+
+
+def calculate_max_drawdown(index):
+    """
+    Return the single worst drawdown for an index level series.
+    
+    Parameters:
+        index (pd.Series): Series of index level indexed by date.
+
+    Returns:
+        float: maximum drawdown value (the most negative drawdown).
+    """
+
+    # compute drawdown series
+    drawdown = calculate_drawdown(index)
+
+    return drawdown.min()
