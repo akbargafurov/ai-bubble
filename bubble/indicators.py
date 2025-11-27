@@ -203,3 +203,31 @@ def calculate_rolling_sharpe(returns, window=60, risk_free_rate=0.0):
     sharpe = (rolling_mean / rolling_std) * np.sqrt(252.0)
 
     return sharpe
+
+
+def calculate_drawdown(index):
+    """
+    Compute the drawdown series for an index level.
+
+    Parameters:
+        index (pd.Series): Series of index level indexed by date.
+
+    Returns:
+        pd.Series: Series of drawdown values, which are negative or zero.
+
+    Raises:
+        ValueError: If the input data is empty.
+    """
+
+    # handle cases where no data exists
+    if index.empty:
+        raise ValueError("Index level series is empty.")
+    
+    # calculate running maximum
+    running_max = index.cummax()
+    
+    # calculate drawdown and name the series
+    drawdown = index / running_max - 1.0
+    drawdown.name = "drawdown"
+
+    return drawdown
