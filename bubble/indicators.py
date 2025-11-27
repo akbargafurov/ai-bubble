@@ -170,7 +170,7 @@ def calculate_rolling_sharpe(returns, window=60, risk_free_rate=0.0):
     Calculate an approximate annualized rolling Sharpe ratio.
 
     Parameters:
-        returns (pd.Series): daily returns of an index.
+        returns (pd.Series): Series of daily returns of an index.
         window (int, optional): rolling window size in trading days. Defaults to 60 days.
         risk_free_rate (float, optional): annual risk-free rate as a decimal. Defaults to 0.0.
 
@@ -180,6 +180,7 @@ def calculate_rolling_sharpe(returns, window=60, risk_free_rate=0.0):
     Raises:
         ValueError: If the input data is empty or has insufficient data points.
     """
+    
     # handle cases where no data exists
     if returns.empty:
         raise ValueError(f"Input data on returns is empty.")
