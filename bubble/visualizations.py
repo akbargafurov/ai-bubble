@@ -147,3 +147,36 @@ def plot_normalized_returns(returns):
     plt.legend()
     plt.tight_layout()
     plt.show()
+
+
+def plot_index_vs_benchmark(ai_index, benchmark_index, ai_label="AI basket (equal weight)", benchmark_label=None):
+    """
+    Plot AI index versus benchmark index.
+    
+    Parameters:
+        ai_index (pd.Series): Series of AI index values indexed by date.
+        benchmark_index (pd.Series): Series of benchmark index values indexed by date.
+        ai_label (str, optional): Label for the AI index line.
+        benchmark_name (str, optional): Name of the benchmark index for labeling.
+        
+    Returns:
+        None
+    """
+
+    # find common dates between the two indices
+    common_index = ai_index.index.intersection(benchmark_index.index)
+    ai = ai_index.loc[common_index]
+    bench = benchmark_index.loc[common_index]
+
+    # create a line plot with specified settings
+    plt.figure(figsize=(10, 6))
+    plt.plot(ai.index, ai, label=ai_label)
+    plt.plot(bench.index, bench, label=benchmark_label)
+
+    plt.ylabel('normalized index level')
+    plt.xlabel('date')
+    plt.title(f"{ai_label} vs {benchmark_label}")
+    
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
