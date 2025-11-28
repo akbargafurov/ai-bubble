@@ -38,6 +38,11 @@ def plot_rolling_correlation(rolling_corr):
     plt.figure(figsize=(10, 6))
     plt.plot(rolling_corr, color='purple', label='average 60 days rolling correlation')
     plt.axhline(y=0.5, color='gray', linestyle='--')
+    
     plt.title('60-day rolling average correlation among AI stocks')
+    plt.ylabel('average correlation')
+    plt.xlabel('date')
+    
     plt.legend()
+    plt.tight_layout()
     plt.show()
