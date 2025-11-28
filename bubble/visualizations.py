@@ -111,3 +111,39 @@ def plot_drawdown(drawdown):
     plt.legend()
     plt.tight_layout()
     plt.show()
+
+
+def plot_normalized_returns(returns):
+    """
+    Plot normalized returns of AI stocks.
+    
+    Parameters:
+        returns (pd.DataFrame): DataFrame of daily returns indexed by date.
+
+    Returns:
+        None
+    """
+
+    # normalize returns to start at 1
+    normalized_returns = returns / returns.iloc[0]
+
+    # generate distinct colors for each stock line
+    colors = sns.color_palette('deep', n_colors=len(normalized_returns.columns))
+
+    # create a line plot with specified settings
+    plt.figure(figsize=(10, 6))
+    for idx, column in normalized_returns.columns:
+        sns.lineplot(
+            x=normalized_returns.index, 
+            y=normalized_returns[column],
+            label=column,
+            color=colors[idx]
+        )
+    
+    plt.ylabel('normalized return (start @ 1.0)')
+    plt.xlabel('date')
+    plt.title('normalized return of selected AI-related stocks')
+
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
