@@ -46,3 +46,33 @@ def plot_rolling_correlation(rolling_corr):
     plt.legend()
     plt.tight_layout()
     plt.show()
+
+
+def plot_rolling_sharpe(rolling_sharpe):
+    """
+    Plot the rolling Sharpe ratio of stock returns.
+
+    Parameters:
+        rolling_sharpe (pd.Series): Series of rolling Sharpe ratios indexed by date.
+
+    Returns:
+        None
+    """
+
+    # create a line plot with specified settings
+    plt.figure(figsize=(10, 6))
+    plt.plot(
+        rolling_sharpe.index, 
+        rolling_sharpe.values, 
+        color='purple', 
+        label='average 60 days rolling Sharpe ratio'
+    )
+    plt.axhline(y=0.0, color='gray', linestyle='--')
+
+    plt.title('60-day rolling average Sharpe ratio among AI stocks')
+    plt.ylabel('average Sharpe ratio')
+    plt.xlabel('date')
+
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
