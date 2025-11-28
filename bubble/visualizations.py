@@ -19,7 +19,7 @@ def plot_correlation_matrix(returns):
     # create a heatmap with specified settings
     plt.figure(figsize=(10, 8))
     sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1)
-    plt.title('correlation matrix of AI stock returns')
+    plt.title("correlation matrix of AI stock returns")
     plt.tight_layout()
     plt.show()
 
@@ -36,12 +36,12 @@ def plot_rolling_correlation(rolling_corr):
 
     # create a line plot with specified settings
     plt.figure(figsize=(10, 6))
-    plt.plot(rolling_corr, color='purple', label='average 60 days rolling correlation')
+    plt.plot(rolling_corr, color='purple', label="average 60 days rolling correlation")
     plt.axhline(y=0.5, color='gray', linestyle='--')
     
-    plt.title('60-day rolling average correlation among AI stocks')
-    plt.ylabel('average correlation')
-    plt.xlabel('date')
+    plt.title("60-day rolling average correlation among AI stocks")
+    plt.ylabel("average correlation")
+    plt.xlabel("date")
     
     plt.legend()
     plt.tight_layout()
@@ -65,13 +65,13 @@ def plot_rolling_sharpe(rolling_sharpe):
         rolling_sharpe.index, 
         rolling_sharpe.values, 
         color='purple', 
-        label='average 60 days rolling Sharpe ratio'
+        label="average 60 days rolling Sharpe ratio"
     )
     plt.axhline(y=0.0, color='gray', linestyle='--')
 
-    plt.title('60-day rolling average Sharpe ratio among AI stocks')
-    plt.ylabel('average Sharpe ratio')
-    plt.xlabel('date')
+    plt.title("60-day rolling average Sharpe ratio among AI stocks")
+    plt.ylabel("average Sharpe ratio")
+    plt.xlabel("date")
 
     plt.legend()
     plt.tight_layout()
@@ -101,12 +101,12 @@ def plot_drawdown(drawdown):
         drawdown.index,
         drawdown.values,
         color='purple',
-        label='average drawdown among AI stocks'
+        label="average drawdown among AI stocks"
     )
 
-    plt.ylabel('drawdown')
-    plt.xlabel('date')
-    plt.title('drawdown curve for AI stocks')
+    plt.ylabel("drawdown")
+    plt.xlabel("date")
+    plt.title("drawdown curve for AI stocks")
     
     plt.legend()
     plt.tight_layout()
@@ -140,9 +140,9 @@ def plot_normalized_returns(returns):
             color=colors[idx]
         )
     
-    plt.ylabel('normalized return (start @ 1.0)')
-    plt.xlabel('date')
-    plt.title('normalized return of selected AI-related stocks')
+    plt.ylabel("normalized return (start @ 1.0)")
+    plt.xlabel("date")
+    plt.title("normalized return of selected AI-related stocks")
 
     plt.legend()
     plt.tight_layout()
@@ -173,10 +173,10 @@ def plot_index_vs_benchmark(ai_index, benchmark_index, ai_label="AI basket (equa
     plt.plot(ai.index, ai, label=ai_label)
     plt.plot(bench.index, bench, label=benchmark_label)
 
-    plt.ylabel('normalized index level')
-    plt.xlabel('date')
+    plt.ylabel("normalized index level")
+    plt.xlabel("date")
     plt.title(f"{ai_label} vs {benchmark_label}")
-    
+
     plt.legend()
     plt.tight_layout()
     plt.show()
