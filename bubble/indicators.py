@@ -8,8 +8,8 @@ def calculate_returns(close, log_returns=False):
 
     Parameters:
         close (pd.DataFrame): DataFrame of closing prices indexed by date.
-        log_returns (bool, optional): 
-            If True, calculates log returns instead of simple returns. 
+        log_returns (bool, optional):
+            If True, calculates log returns instead of simple returns.
             Else, defaults to False.
 
     Returns:
@@ -38,8 +38,8 @@ def calculate_index_returns(index, log_returns=False):
 
     Parameters:
         index (pd.DataFrame): Series of index level indexed by date.
-        log_returns (bool, optional): 
-            If True, calculates log returns instead of simple returns. 
+        log_returns (bool, optional):
+            If True, calculates log returns instead of simple returns.
             Else, defaults to False.
 
     Returns:
@@ -70,7 +70,7 @@ def build_equal_weight_index(returns):
         returns (pd.DataFrame): DataFrame of closing prices indexed by date.
 
     Returns:
-        pd.Series: equal-weight index level normalized to 1.0 at the start. 
+        pd.Series: equal-weight index level normalized to 1.0 at the start.
 
     Raises:
         ValueError: If the input data is empty.
@@ -79,9 +79,9 @@ def build_equal_weight_index(returns):
     # handle cases where no data exists
     if returns.empty:
         raise ValueError("Input financial data is empty.")
-    
+
     # normalize returns to 1.0 on the first date
-    normalized_returns = returns/returns.iloc[0]
+    normalized_returns = returns / returns.iloc[0]
     index = normalized_returns.mean(axis=1)
     index.name = "equal_weight_index"
 
@@ -91,11 +91,11 @@ def build_equal_weight_index(returns):
 def calculate_rolling_volatility(returns, window=60):
     """
     Calculate rolling volatility of returns over a specific window.
-    
+
     Parameters:
         returns (pd.DataFrame): DataFrame of daily returns indexed by date.
         window (int, optional): rolling window size in trading days. Defaults to 60 days.
-           
+
     Returns:
         pd.DataFrame: DataFrame of rolling volatility values indexed by date.
 
@@ -106,14 +106,14 @@ def calculate_rolling_volatility(returns, window=60):
     # handle cases where no data exists
     if returns.empty:
         raise ValueError(f"Input data on returns is empty.")
-    
+
     # handle cases where there are not enough data points
     if len(returns) < window:
         raise ValueError(
             f"Not enough data points to compute rolling volatility "
             f"with window size {window}."
         )
-    
+
     # calculate rolling volatility for each stock
     rolling_volatility = returns.rolling(window=window).std() * np.sqrt(252.0)
 
@@ -132,27 +132,27 @@ def calculate_rolling_correlation(returns, window=60):
         pd.Series: Series of average rolling correlation indexed by date.
 
     Raises:
-        ValueError: 
+        ValueError:
             If the input data is empty, has insufficient data points, or has less than two columns.
     """
 
     # handle cases where no data exists
     if returns.empty:
         raise ValueError(f"Input data on returns is empty.")
-    
+
     # handle cases with less than two columns
     if returns.shape[1] < 2:
         raise ValueError(
             f"At least two columns of stocks are required to compute correlation."
         )
-    
+
     # handle cases where there are not enough data points
     if len(returns) < window:
         raise ValueError(
             f"Not enough data points to compute rolling volatility "
             f"with window size {window}."
         )
-    
+
     # calculate rolling correlation for each pair of stocks
     rolling_corr = returns.rolling(window=window).corr()
 
@@ -184,14 +184,14 @@ def calculate_rolling_sharpe(returns, window=60, risk_free_rate=0.0):
     # handle cases where no data exists
     if returns.empty:
         raise ValueError(f"Input data on returns is empty.")
-    
+
     # handle cases where there are not enough data points
     if len(returns) < window:
         raise ValueError(
             f"Not enough data points to compute rolling volatility "
             f"with window size {window}."
         )
-    
+
     # convert annual risk-free rate to a daily rate
     daily_risk_free_rate = risk_free_rate / 252.0
     excess_returns = returns - daily_risk_free_rate
@@ -223,10 +223,10 @@ def calculate_drawdown(index):
     # handle cases where no data exists
     if index.empty:
         raise ValueError("Index level series is empty.")
-    
+
     # calculate running maximum
     running_max = index.cummax()
-    
+
     # calculate drawdown and name the series
     drawdown = index / running_max - 1.0
     drawdown.name = "drawdown"
@@ -237,7 +237,7 @@ def calculate_drawdown(index):
 def calculate_max_drawdown(index):
     """
     Return the single worst drawdown for an index level series.
-    
+
     Parameters:
         index (pd.Series): Series of index level indexed by date.
 
