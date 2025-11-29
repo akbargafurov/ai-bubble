@@ -180,3 +180,31 @@ def plot_index_vs_benchmark(ai_index, benchmark_index, ai_label="AI basket (equa
     plt.legend()
     plt.tight_layout()
     plt.show()
+
+
+def plot_return_distribution(ai_returns, benchmark_returns, ai_label="AI basket", benchmark_label="Benchmark"):
+    """
+    Plot return distribution comparison between AI basket and benchmark.
+    
+    Parameters:
+        ai_returns (pd.Series): Series of AI basket returns.
+        benchmark_returns (pd.Series): Series of benchmark returns.
+        ai_label (str, optional): Label for AI basket in the plot.
+        benchmark_label (str, optional): Label for benchmark in the plot.
+    
+    Returns:
+        None
+    """
+
+    # create a density plot with specified settings
+    plt.figure(figsize=(10, 6))
+    sns.kdeplot(ai_returns, label=ai_label)
+    sns.kdeplot(benchmark_returns, label=benchmark_label)
+
+    plt.ylabel("density")
+    plt.xlabel("daily return")
+    plt.title(f"return distribution comparison: {ai_label} vs {benchmark_label}")
+    
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
