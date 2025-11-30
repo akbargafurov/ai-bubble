@@ -14,7 +14,7 @@ from .indicators import (
 from .visualizations import (
     plot_correlation_matrix,
     plot_rolling_correlation,
-    plot_normalized_returns,
+    plot_normalized_prices,
     plot_index_vs_benchmark,
     plot_rolling_sharpe,
     plot_drawdown,
