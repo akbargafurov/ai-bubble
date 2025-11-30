@@ -67,7 +67,7 @@ def build_equal_weight_index(returns):
     Build an equal-weight index from a panel of returns.
 
     Parameters:
-        returns (pd.DataFrame): DataFrame of closing prices indexed by date.
+        returns (pd.DataFrame): DataFrame of returns indexed by date.
 
     Returns:
         pd.Series: equal-weight index level normalized to 1.0 at the start.
