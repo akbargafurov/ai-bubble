@@ -128,7 +128,7 @@ def plot_normalized_returns(returns):
 
     # create a line plot with specified settings
     plt.figure(figsize=(10, 6))
-    for idx, column in normalized_returns.columns:
+    for idx, column in enumerate(normalized_returns.columns):
         sns.lineplot(
             x=normalized_returns.index,
             y=normalized_returns[column],
