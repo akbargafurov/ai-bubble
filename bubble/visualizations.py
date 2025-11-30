@@ -79,12 +79,13 @@ def plot_rolling_sharpe(rolling_sharpe):
     plt.show()
 
 
-def plot_drawdown(drawdown):
+def plot_drawdown(drawdown, label):
     """
     Plot the drawdown curve.
 
     Parameters:
         drawdown (pd.Series): series of drawdown values indexed by date.
+        label (str): label for the drawdown line.
 
     Returns:
         None
@@ -96,13 +97,12 @@ def plot_drawdown(drawdown):
     plt.plot(
         drawdown.index,
         drawdown.values,
-        color="purple",
-        label="average drawdown among AI stocks",
+        label=label,
     )
 
     plt.ylabel("drawdown")
     plt.xlabel("date")
-    plt.title("drawdown curve for AI stocks")
+    plt.title(f"drawdown for {label}")
 
     plt.legend()
     plt.tight_layout()
