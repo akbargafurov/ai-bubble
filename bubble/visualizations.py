@@ -7,7 +7,7 @@ def plot_correlation_matrix(returns):
     Plot the correlation matrix of stock returns.
 
     Parameters:
-        returns (pd.DataFrame): pandas DataFrame of daily returns indexed by date.
+        returns (pd.DataFrame): DataFrame of daily returns indexed by date.
 
     Returns:
         None
@@ -29,7 +29,7 @@ def plot_rolling_correlation(rolling_corr):
     Plot the rolling average correlation of stock returns.
 
     Parameters:
-        rolling_corr (pd.Series): pandas Series of rolling average correlations indexed by date.
+        rolling_corr (pd.Series): Series of rolling average correlations indexed by date.
 
     Returns:
         None
@@ -45,6 +45,61 @@ def plot_rolling_correlation(rolling_corr):
     plt.xlabel("date")
 
     plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_rolling_volatility(
+    rolling_vol,
+    average_only = False, 
+    subset = None
+):
+    """
+    Plot the rolling volatility of stock returns.
+
+    Parameters:
+        rolling_vol (pd.DataFrame): DataFrame of rolling volatility indexed by date.
+        average_only (bool, optional): 
+            If True, plot only the average volatility across stocks.
+            If False, plot individual stock volatility.
+        subset (list, optional): List of stock tickers to include in the plot. If None, include all.
+
+    Returns:
+        None
+    
+    Raises:
+        KeyError: If any ticker in subset is not found in rolling_vol columns.
+    """
+
+    # filter data if subset is provided
+    if subset is not None:
+        missing = set(subset) - set(rolling_vol.columns)
+        if missing:
+            raise KeyError(f"Tickers not found in rolling_vol: {missing}")
+        rolling_vol = rolling_vol[subset]
+
+    plt.figure(figsize=(10, 6))
+
+    # plot average or individual volatility based on average_only flag
+    if average_only:
+        avg_vol = rolling_vol.mean(axis=1)
+        plt.plot(avg_vol.index, avg_vol.values, label="average AI volatility")
+    else:
+        for column in rolling_vol.columns:
+            plt.plot(rolling_vol.index, rolling_vol[column], label=column, alpha=0.7)
+
+    plt.axhline(y=0.2, color="gray", linestyle="--", linewidth=1)
+
+    plt.title("60-day rolling annualized volatility of AI stocks")
+    plt.ylabel("annualized volatility")
+    plt.xlabel("date")
+
+    # adjust legend based on number of lines plotted
+    if average_only or (subset is not None and len(subset) <= 6):
+        plt.legend()
+    else:
+        plt.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0), fontsize="small")
+
     plt.tight_layout()
     plt.show()
 
