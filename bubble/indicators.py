@@ -188,7 +188,7 @@ def calculate_rolling_sharpe(returns, window=60, risk_free_rate=0.0):
     # handle cases where there are not enough data points
     if len(returns) < window:
         raise ValueError(
-            f"Not enough data points to compute rolling volatility "
+            f"Not enough data points to compute rolling Sharpe ratio "
             f"with window size {window}."
         )
 
