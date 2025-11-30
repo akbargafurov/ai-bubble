@@ -63,7 +63,7 @@ The core analysis is implemented in the `bubble` package.
 
 All plotting uses `matplotlib`/`seaborn` behind the scenes:
 
-- `plot_normalized_prices(...)` – normalised price paths for individual AI names.
+- `plot_normalized_prices(...)` – normalized price paths for individual AI names.
 - `plot_index_vs_benchmark(...)` – AI basket vs QQQ/SPY/SOXX.
 - `plot_correlation_matrix(...)` – correlation heatmap of AI stock returns.
 - `plot_rolling_correlation(...)` – time-varying average correlation.
@@ -100,6 +100,7 @@ ai-bubble/
 │   └── visualizations.py          
 ├── presentation/
 │   └── ai_bubble_analysis.ipynb
+├── app.py
 ├── LICENSE
 ├── README.md
 └── requirements.txt
@@ -135,6 +136,7 @@ The key Python libraries used are:
 * pandas for data manipulation
 * numpy for numerical calculations
 * matplotlib and seaborn for visualisation
+* streamlit for interactive dashboard
 * yfinance for downloading market data
 
 ---
@@ -186,3 +188,20 @@ There are some limitations present in this project. In the future, they can be a
 * The analysis is based on daily prices and a limited time window (from 2020), so it may miss longer-term cycles.
 * Fundamental data (earnings, cash flows, detailed valuation models) are not modeled explicitly; the project focuses on market behavior, not intrinsic value.
 * The project is descriptive and educational only; it is neither a trading strategy nor does it constitute investment advice.
+
+---
+
+## 8. Streamlit app (optional)
+
+You can explore the analysis interactively with a small Streamlit app:
+
+```bash
+streamlit run app.py
+```
+
+The app lets you:
+* choose a time frame (from last 1 month to 5 years),
+* pick preset groups of AI tickers (core AI leaders, hardware, platforms, ETFs, all names),
+* or customize the selection manually,
+
+and then shows the cumulative return since the chosen start date, and a table of total returns over that period.
